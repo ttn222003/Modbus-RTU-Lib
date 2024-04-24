@@ -18,7 +18,7 @@ uint8_t ModbusMasterReceive(uint8_t data[], uint16_t* real_data);
 
 #ifdef SLAVE
 uint8_t ModbusSlaveReceive(uint8_t data_receive[], uint8_t slaveID);
-void ModbusSlaveTransmitt(uint8_t data_receive[], uint8_t data[]);
+void ModbusSlaveTransmitt(uint8_t data_receive[], uint16_t data[]);
 #endif
 
 #endif

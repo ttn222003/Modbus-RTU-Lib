@@ -124,12 +124,13 @@ uint8_t ModbusSlaveReceive(uint8_t data_receive[], uint8_t slaveID)
 	return correct_state;
 }
 
-void ModbusSlaveTransmitt(uint8_t data_receive[], uint8_t data[])
+void ModbusSlaveTransmitt(uint8_t data_receive[], uint16_t data[])
 {
 	uint16_t startAdd = (data_receive[2] << 8) | data_receive[3];
 	uint16_t numOfRegs = ((data_receive[4] << 8) | data_receive[5]) * 2;
 	
 	uint8_t i = 0;
+	uint8_t n = i;
 	uint8_t data_send[5 + numOfRegs];
 	uint8_t frame_buffer[3 + numOfRegs];
 	uint16_t crc;
@@ -144,13 +145,14 @@ void ModbusSlaveTransmitt(uint8_t data_receive[], uint8_t data[])
 	
 	while( i < (uint8_t)numOfRegs)
 	{
-		data_send[i + 3] = data[startAdd + i];
-		data_send[i + 3 + 1] = data[startAdd + i + 1];
+		data_send[i + 3] = (uint8_t)((data[startAdd + n] >> 8) & 0xFF);
+		data_send[i + 3 + 1] = (uint8_t)(data[startAdd + n] & 0xFF);
 		
-		frame_buffer[i + 3] = data[startAdd + i];
-		frame_buffer[i + 3 + 1] = data[startAdd + i + 1];
+		frame_buffer[i + 3] = data[startAdd + n];
+		frame_buffer[i + 3 + 1] = data[startAdd + i + n];
 		
 		i = i + 2;
+		n++;
 	}
 	
 	crc = CRC16_Check_A((uint8_t)(3 + numOfRegs), frame_buffer);
