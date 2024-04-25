@@ -148,8 +148,8 @@ void ModbusSlaveTransmitt(uint8_t data_receive[], uint16_t data[])
 		data_send[i + 3] = (uint8_t)((data[startAdd + n] >> 8) & 0xFF);
 		data_send[i + 3 + 1] = (uint8_t)(data[startAdd + n] & 0xFF);
 		
-		frame_buffer[i + 3] = data[startAdd + n];
-		frame_buffer[i + 3 + 1] = data[startAdd + i + n];
+		frame_buffer[i + 3] = (uint8_t)((data[startAdd + n] >> 8) & 0xFF);
+		frame_buffer[i + 3 + 1] = (uint8_t)(data[startAdd + n] & 0xFF);
 		
 		i = i + 2;
 		n++;
